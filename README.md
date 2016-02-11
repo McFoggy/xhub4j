@@ -1,4 +1,4 @@
-# XHub4J
+# XHub4J [![Build Status](https://travis-ci.org/McFoggy/xhub4j.svg?branch=master)](https://travis-ci.org/McFoggy/xhub4j)
 
 XHub4J is a set of utilities to allow to secured webhooks either as a sender or as a consumer.
 
@@ -53,10 +53,12 @@ Example to filter a webhook sent by github:
 In this module we provide JAX-RS components that can be registered on `javax.ws.rs.client.ClientBuilder` to automatically include a XHub header to an HTTP post fire using a `WebTarget` produced via this builder.
 
 > TODO add wiki page to comment why 2 impl are needed
+
 > TODO send post to resteasy & jersey for each of their problem
+
 > TODO send post to jaxrs JSR group for expected behavior
 
-### `fr.brouillard.oss.security.xhub.ws.rest.ext.XHubClientRequestFilter`
+### `XHubClientRequestFilter`
 
 Simple JAXRS component defined as a `ClientRequestFilter`.
 
@@ -99,7 +101,7 @@ Profiles compliancy (when you use th predefined profile to launch tests):
 - `resteasy`: doesn't work
 
 
-### `fr.brouillard.oss.security.xhub.ws.rest.ext.XHubWriterInterceptor`
+### `XHubWriterInterceptor`
 
 Simple JAXRS component defined as a `WriterInterceptor`.
 
