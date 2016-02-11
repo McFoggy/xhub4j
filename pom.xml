@@ -19,12 +19,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>fr.brouillard.oss.security</groupId>
+    <groupId>fr.brouillard.oss.security.xhub</groupId>
     <artifactId>xhub4j-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>xhub4j</name>
+    <name>xhub4j-parent</name>
     <url>http://oss.brouillard.fr/projects/xhub4j</url>
     <description>Provides means to send or consume secured webhooks.</description>
 
