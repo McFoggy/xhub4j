@@ -19,7 +19,7 @@ assertThat(generatedHeader, is(expectedResult));
 
 ## xhub4j-servlet
 
-Provides a Filter to use to secure a webhook consumer.
+Provides a servlet Filter to secure a webhook consumer.
 
 Example to filter a webhook sent by github:
 
@@ -41,11 +41,11 @@ Example to filter a webhook sent by github:
 ### Filter parameters
 
 - `x-hub-token`: the token to be used as encryption key by the webhook sender
-- `x-hub-converter`: the encoder to use, see XHub.XHubConverter (TODO link to encoders javadoc)
+- `x-hub-converter`: the encoder to use, see [XHub.XHubConverter](https://github.com/McFoggy/xhub4j/blob/master/xhub4j-core/src/main/java/fr/brouillard/oss/security/xhub/XHub.java#L47)
   - `BASE64`: encodes the data as a Base64 string
-  - `HEXA`: encodes the data has an hexadecimal string
+  - `HEXA`: encodes the data as an hexadecimal string
   - `BASE64_LOWERCASE`: encodes the data as a Base64 string with lowercase letters
-  - `HEXA_LOWERCASE` _(default)_: encodes the data has an hexadecimal string with lowercase letters (encoder used in github webhooks)
+  - `HEXA_LOWERCASE` _(default)_: encodes the data as an hexadecimal string with lowercase letters (encoder used in github webhooks)
 - `x-hub-header`: the name of the http header containing the XHub token, defaults to `X-Hub-Signature`
  
 ## xhub4j-jaxrs-client
@@ -58,7 +58,7 @@ In this module we provide JAX-RS components that can be registered on `javax.ws.
 
 > TODO send post to jaxrs JSR group for expected behavior
 
-### `XHubClientRequestFilter`
+### XHubClientRequestFilter
 
 Simple JAXRS component defined as a `ClientRequestFilter`.
 
@@ -101,7 +101,7 @@ Profiles compliancy (when you use th predefined profile to launch tests):
 - `resteasy`: doesn't work
 
 
-### `XHubWriterInterceptor`
+### XHubWriterInterceptor
 
 Simple JAXRS component defined as a `WriterInterceptor`.
 
