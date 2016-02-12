@@ -64,7 +64,7 @@ Simple JAXRS component defined as a `ClientRequestFilter`.
 
 **Usage**:
 
-As defined in `WithClientRequestFilterWebhookSender` (TODO link to code), the following code imitating the send action to a webhook
+As defined in [`WithClientRequestFilterWebhookSender`](https://github.com/McFoggy/xhub4j/blob/master/xhub4j-jaxrs-client/src/test/java/fr/brouillard/oss/security/xhub/ws/rest/ext/WithClientRequestFilterWebhookSender.java), the following code imitating the send action to a webhook
 
 ```
 XHubClientRequestFilter clientFilter = new XHubClientRequestFilter();
@@ -107,7 +107,7 @@ Simple JAXRS component defined as a `WriterInterceptor`.
 
 **Usage**:
 
-As defined in `WithWriterInterceptorSender` (TODO link to code), the following code imitating the send action to a webhook
+As defined in [`WithWriterInterceptorSender`](https://github.com/McFoggy/xhub4j/blob/master/xhub4j-jaxrs-client/src/test/java/fr/brouillard/oss/security/xhub/ws/rest/ext/WithWriterInterceptorSender.java), the following code imitating the send action to a webhook
 
 ```
 XHubWriterInterceptor xhubWriter = new XHubWriterInterceptor();
