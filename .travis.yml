@@ -11,8 +11,8 @@ jdk:
   - oraclejdk8
 
 branches:
-  only:
-    - master
+    except:
+        - gh-pages
 
 notifications:
   email:
