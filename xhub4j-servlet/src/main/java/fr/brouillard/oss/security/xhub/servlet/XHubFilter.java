@@ -43,8 +43,10 @@ public class XHubFilter implements Filter {
 
     public void init(FilterConfig filterConfig) throws ServletException {
         token = filterConfig.getInitParameter(TOKEN_PARAM_NAME);
-        Objects.requireNonNull(token, "missing mandatory " + TOKEN_PARAM_NAME + " in filter" + XHubFilter.class.getName() + " configuration");
-
+        if (token == null) {
+            throw new ServletException(String.format("missing mandatory %s  in filter %s configuration", TOKEN_PARAM_NAME, XHubFilter.class.getName()));
+        }
+        
         headerProperty = filterConfig.getInitParameter(HEADER_XHUB_PROPERTY);
         if (headerProperty == null) {
             headerProperty = XHub.DEFAULT_HEADER_XHUB_PROPERTY;
@@ -78,7 +80,7 @@ public class XHubFilter implements Filter {
             
             String xhubCalculatedToken = XHub.generateXHubToken(converter, XHubDigest.fromAlgorithm(xhubReceivedDigest), getToken(), readable.getRequestBodyData());
 
-            if (xhubCalculatedToken.equals(xhubReceivedToken)) {
+            if (!xhubCalculatedToken.equals(xhubReceivedToken)) {
                 String exMessage = String.format("Security failure, received message '%s: %s' does not match calculated one: %s for %s digest", headerProperty, xhubReceivedHeader,
                         xhubCalculatedToken, xhubReceivedDigest);
                 throw new ServletException(exMessage);

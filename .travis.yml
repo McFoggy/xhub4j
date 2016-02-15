@@ -1,6 +1,9 @@
 language: java
 
-script: mvn clean install --quiet -B
+script:
+  - mvn clean install --quiet -B
+  - mvn clean verify -Pwildfly10
+  - mvn clean verify -Pwildfly8
 
 install: /bin/true
 

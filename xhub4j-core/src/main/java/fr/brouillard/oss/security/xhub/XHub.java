@@ -28,7 +28,6 @@ public class XHub {
         MD5,
         SHA1,
         SHA256,
-        HA384,
         SHA512;
         
         public static XHubDigest fromAlgorithm(String algo) {

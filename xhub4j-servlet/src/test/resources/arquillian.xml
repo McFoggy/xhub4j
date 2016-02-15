@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<arquillian xmlns="http://jboss.org/schema/arquillian"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.org/schema/arquillian http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
+
+	<container qualifier="wildfly10" default="true">
+		<configuration>
+			<property name="chameleonTarget">wildfly:10.0.0.Final:managed</property>
+			<property name="serverConfig">standalone.xml</property>
+		</configuration>
+	</container>
+	<container qualifier="wildfly8">
+		<configuration>
+			<property name="chameleonTarget">wildfly:8.2.1.Final:managed</property>
+			<property name="serverConfig">standalone.xml</property>
+		</configuration>
+	</container>
+	<container qualifier="glassfish">
+		<configuration>
+			<property name="chameleonTarget">glassfish:4.1:managed</property>
+		</configuration>
+	</container>
+	<container qualifier="glassfish-embedded">
+		<configuration>
+			<property name="chameleonTarget">glassfish:4.1:embedded</property>
+		</configuration>
+	</container>
+	<container qualifier="glassfish-remote">
+		<configuration>
+			<property name="chameleonTarget">glassfish:4.1:remote</property>
+		</configuration>
+	</container>
+</arquillian>

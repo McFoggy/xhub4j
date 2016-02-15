@@ -1,0 +1,32 @@
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+    <servlet>
+        <servlet-name>OKWebhookServlet</servlet-name>
+        <servlet-class>fr.brouillard.oss.security.xhub.servlet.predefined.OKWebhookServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>OKWebhookServlet</servlet-name>
+        <url-pattern>/webhook</url-pattern>
+    </servlet-mapping>
+    <filter>
+        <filter-name>Github-XHubFilter</filter-name>
+        <filter-class>fr.brouillard.oss.security.xhub.servlet.XHubFilter</filter-class>
+        <!--
+        
+        Token is commented so that Filter config must fail
+         
+        <init-param>
+            <param-name>x-hub-token</param-name>
+            <param-value>password4tests</param-value>
+        </init-param>
+        -->
+        <init-param>
+            <param-name>x-hub-converter</param-name>
+            <param-value>HEXA_LOWERCASE</param-value>       <!-- convert the data as an hexadecimal string with lowercase letters  -->
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>Github-XHubFilter</filter-name>
+        <servlet-name>OKWebhookServlet</servlet-name>
+    </filter-mapping>
+</web-app>

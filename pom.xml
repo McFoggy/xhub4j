@@ -71,24 +71,75 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
+        <arquillian.qualifier>wildfly10</arquillian.qualifier>
+
         <version.junit>4.12</version.junit>
         <version.javaee>7.0</version.javaee>
+
+        <version.plugin.failsafe>2.19</version.plugin.failsafe>
+
+        <version.shrinkwrap>1.2.2</version.shrinkwrap>
+        <version.shrinkwrap.resolver>2.2.0</version.shrinkwrap.resolver>
+        <version.arquillian>1.1.9.Final</version.arquillian>
+        <version.arquillian.chameleon>1.0.0.Alpha6</version.arquillian.chameleon>
+        <version.arquillian.rest>1.0.0.Alpha3</version.arquillian.rest>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>${version.javaee}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${version.junit}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>javax</groupId>
+                <artifactId>javaee-api</artifactId>
+                <version>${version.javaee}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${version.junit}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>${version.arquillian}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.shrinkwrap</groupId>
+                <artifactId>shrinkwrap-bom</artifactId>
+                <version>${version.shrinkwrap}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.shrinkwrap.resolver</groupId>
+                <artifactId>shrinkwrap-resolver-bom</artifactId>
+                <version>${version.shrinkwrap.resolver}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.arquillian.container</groupId>
+                <artifactId>arquillian-container-chameleon</artifactId>
+                <version>${version.arquillian.chameleon}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian.extension</groupId>
+                <artifactId>arquillian-rest-client-api</artifactId>
+                <version>${version.arquillian.rest}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian.extension</groupId>
+                <artifactId>arquillian-rest-client-impl-3x</artifactId>
+                <version>${version.arquillian.rest}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <modules>
         <module>xhub4j-core</module>
@@ -188,11 +239,62 @@
                         </lifecycleMappingMetadata>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${version.plugin.failsafe}</version>
+                    <executions>
+                        <execution>
+                            <id>tests</id>
+                            <phase>integration-test</phase>
+                            <goals>
+                                <goal>integration-test</goal>
+                            </goals>
+                            <configuration>
+                                <systemPropertyVariables>
+                                    <arquillian.launch>${arquillian.qualifier}</arquillian.launch>
+                                </systemPropertyVariables>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>verify</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
 
     <profiles>
+        <profile>
+            <id>wildfly</id>
+            <properties>
+                <arquillian.qualifier>wildfly10</arquillian.qualifier>
+            </properties>
+        </profile>
+        <profile>
+            <id>wildfly10</id>
+            <properties>
+                <arquillian.qualifier>wildfly10</arquillian.qualifier>
+            </properties>
+        </profile>
+        <profile>
+            <id>wildfly8</id>
+            <properties>
+                <arquillian.qualifier>wildfly8</arquillian.qualifier>
+            </properties>
+        </profile>
+        <profile>
+            <id>glassfish</id>
+            <properties>
+                <arquillian.qualifier>glassfish</arquillian.qualifier>
+            </properties>
+        </profile>
+    
         <profile>
             <id>oss-release</id>
             <distributionManagement>
