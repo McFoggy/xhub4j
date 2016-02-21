@@ -2,6 +2,26 @@
 
 XHub4J is a set of utilities to allow to secured webhooks either as a sender or as a consumer.
 
+## maven coordinates
+
+```
+<dependency>
+    <groupId>fr.brouillard.oss.security.xhub</groupId>
+    <artifactId>xhub4j-core</artifactId>
+    <version>X.Y.Z</version>
+</dependency>
+<dependency>
+    <groupId>fr.brouillard.oss.security.xhub</groupId>
+    <artifactId>xhub4j-servlet</artifactId>
+    <version>X.Y.Z</version>
+</dependency>
+<dependency>
+    <groupId>fr.brouillard.oss.security.xhub</groupId>
+    <artifactId>xhub4j-jaxrs-client</artifactId>
+    <version>X.Y.Z</version>
+</dependency>
+```
+
 ## xhub4j-core
 
 Can be used standalone to create `X-Hub-Signature` HTTP headers.
