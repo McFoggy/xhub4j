@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.brouillard.oss.security.xhub.servlet;
+package fr.brouillard.oss.security.xhub.it.servlet;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -38,6 +38,7 @@ import org.junit.runner.RunWith;
 import fr.brouillard.oss.security.xhub.XHub;
 import fr.brouillard.oss.security.xhub.XHub.XHubConverter;
 import fr.brouillard.oss.security.xhub.XHub.XHubDigest;
+import fr.brouillard.oss.security.xhub.it.servlet.webhook.OKWebhookServlet;
 
 @RunWith(Arquillian.class)
 public class ServletWithPredefinedFailingWebXmlIT {
@@ -45,7 +46,8 @@ public class ServletWithPredefinedFailingWebXmlIT {
     public static WebArchive createDeployment() {
         WebArchive war = ShrinkWrap.create(WebArchive.class)
                 .addPackages(false, "fr.brouillard.oss.security.xhub")   // add xhub4j-core
-                .addPackages(true, "fr.brouillard.oss.security.xhub.servlet")
+                .addPackages(true, "fr.brouillard.oss.security.xhub.servlet")   // add xhub4j-servlet
+                .addClass(OKWebhookServlet.class)		// add test webhook servlet
                 .addAsResource(EmptyAsset.INSTANCE, "META-INF/beans.xml")
                 .addAsWebInfResource("WEB-INF/predefined-ok-servlet-with-bad-configured-xhub-filter.xml", "web.xml")
                 ;
@@ -53,7 +55,7 @@ public class ServletWithPredefinedFailingWebXmlIT {
     }
     
     @Test
-    public void will_fail_on_init(@ArquillianResteasyResource("webhook") WebTarget target) {
+    public void will_fail_on_init(@ArquillianResteasyResource("resources/webhook") WebTarget target) {
         String data = "This our important content to be sent";
         String secret = "password4tests";
         

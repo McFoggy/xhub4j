@@ -16,7 +16,7 @@
 package fr.brouillard.oss.security.xhub.servlet;
 
 import java.io.IOException;
-import java.util.Objects;
+import java.util.Optional;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -38,8 +38,8 @@ public class XHubFilter implements Filter {
     private final String DEFAULT_CONVERTER = XHub.XHubConverter.HEXA_LOWERCASE.name();;
 
     private String token;
-    private String headerProperty;
-    private XHub.XHubConverter converter;
+    private String headerProperty = XHub.DEFAULT_HEADER_XHUB_PROPERTY;
+	private XHub.XHubConverter converter = XHubConverter.valueOf(DEFAULT_CONVERTER);
 
     public void init(FilterConfig filterConfig) throws ServletException {
         token = filterConfig.getInitParameter(TOKEN_PARAM_NAME);
@@ -47,16 +47,8 @@ public class XHubFilter implements Filter {
             throw new ServletException(String.format("missing mandatory %s  in filter %s configuration", TOKEN_PARAM_NAME, XHubFilter.class.getName()));
         }
         
-        headerProperty = filterConfig.getInitParameter(HEADER_XHUB_PROPERTY);
-        if (headerProperty == null) {
-            headerProperty = XHub.DEFAULT_HEADER_XHUB_PROPERTY;
-        }
-        
-        String converterName = filterConfig.getInitParameter(CONVERTER_PARAM_NAME);
-        if (converterName == null) {
-            converterName = DEFAULT_CONVERTER;
-        }
-        converter = XHubConverter.valueOf(converterName);
+        headerProperty = Optional.ofNullable(filterConfig.getInitParameter(HEADER_XHUB_PROPERTY)).orElse(headerProperty);
+        converter = Optional.ofNullable(filterConfig.getInitParameter(CONVERTER_PARAM_NAME)).map(XHubConverter::valueOf).orElse(converter);
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -65,23 +57,23 @@ public class XHubFilter implements Filter {
 
             ReadableHttpServletRequestWrapper readable = new ReadableHttpServletRequestWrapper(httpRequest);
 
-            String xhubReceivedHeader = httpRequest.getHeader(headerProperty);
+            String xhubReceivedHeader = httpRequest.getHeader(getHeaderProperty());
             if (xhubReceivedHeader == null) {
-                throw new ServletException(String.format("no %s security header received, cannot authenticate call", headerProperty));
+                throw new ServletException(String.format("no %s security header received, cannot authenticate call", getHeaderProperty()));
             }
             String[] splittedXHubData = xhubReceivedHeader.split("=");
 
             if (splittedXHubData.length != 2) {
-                throw new ServletException(String.format("received %s security header cannot be splitted, should be of the form {DIGEST}:{TOKEN}", headerProperty));
+                throw new ServletException(String.format("received %s security header cannot be splitted, should be of the form {DIGEST}:{TOKEN}", getHeaderProperty()));
             }
 
             String xhubReceivedDigest = splittedXHubData[0];
             String xhubReceivedToken = splittedXHubData[1];
             
-            String xhubCalculatedToken = XHub.generateXHubToken(converter, XHubDigest.fromAlgorithm(xhubReceivedDigest), getToken(), readable.getRequestBodyData());
+            String xhubCalculatedToken = XHub.generateXHubToken(getConverter(), XHubDigest.fromAlgorithm(xhubReceivedDigest), getToken(), readable.getRequestBodyData());
 
             if (!xhubCalculatedToken.equals(xhubReceivedToken)) {
-                String exMessage = String.format("Security failure, received message '%s: %s' does not match calculated one: %s for %s digest", headerProperty, xhubReceivedHeader,
+                String exMessage = String.format("Security failure, received message '%s: %s' does not match calculated one: %s for %s digest", getHeaderProperty(), xhubReceivedHeader,
                         xhubCalculatedToken, xhubReceivedDigest);
                 throw new ServletException(exMessage);
             }
@@ -89,11 +81,19 @@ public class XHubFilter implements Filter {
             chain.doFilter(readable, response);
         }
     }
+    
+    public void destroy() {
+    }
 
     protected String getToken() {
         return token;
     }
 
-    public void destroy() {
-    }
+    protected String getHeaderProperty() {
+		return headerProperty;
+	}
+
+	protected XHub.XHubConverter getConverter() {
+		return converter;
+	}
 }

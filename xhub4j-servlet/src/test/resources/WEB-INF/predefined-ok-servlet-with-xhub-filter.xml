@@ -2,11 +2,11 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     <servlet>
         <servlet-name>OKWebhookServlet</servlet-name>
-        <servlet-class>fr.brouillard.oss.security.xhub.servlet.predefined.OKWebhookServlet</servlet-class>
+        <servlet-class>fr.brouillard.oss.security.xhub.it.servlet.webhook.OKWebhookServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>OKWebhookServlet</servlet-name>
-        <url-pattern>/webhook</url-pattern>
+        <url-pattern>/resources/webhook</url-pattern>
     </servlet-mapping>
     <filter>
         <filter-name>Github-XHubFilter</filter-name>

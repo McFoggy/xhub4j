@@ -13,40 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.brouillard.oss.security.xhub.servlet;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.startsWith;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-
-import java.net.URL;
+package fr.brouillard.oss.security.xhub.it.servlet;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import fr.brouillard.oss.security.xhub.it.servlet.webhook.OKWebhookServlet;
+
 @RunWith(Arquillian.class)
-public class ArquillianURLInjectionIT {
-    @Deployment(testable = false)
+public class ServletWithPredefinedWorkingWebXmlIT extends BaseServletWebHookTester {
+    @Deployment(testable=false)
     public static WebArchive createDeployment() {
-        WebArchive war = ShrinkWrap.create(WebArchive.class).addAsResource(EmptyAsset.INSTANCE, "META-INF/beans.xml");
+        WebArchive war = ShrinkWrap.create(WebArchive.class)
+                .addPackages(false, "fr.brouillard.oss.security.xhub")   // add xhub4j-core
+                .addPackages(true, "fr.brouillard.oss.security.xhub.servlet")   // add xhub4j-servlet
+                .addClass(OKWebhookServlet.class)		// add test webhook servlet
+                .addAsResource(EmptyAsset.INSTANCE, "META-INF/beans.xml")
+                .addAsWebInfResource("WEB-INF/predefined-ok-servlet-with-xhub-filter.xml", "web.xml")
+                ;
         return war;
-    }
-    
-    @ArquillianResource URL deploymentURLAsClassAttribute;
-    
-    @Test
-    public void tested_url_can_be_injected_in_several_ways(@ArquillianResource URL deploymentURLAsParameter) {
-        assertNotNull(deploymentURLAsClassAttribute);
-        assertNotNull(deploymentURLAsParameter);
-        
-        assertThat(deploymentURLAsParameter, is(deploymentURLAsClassAttribute));
-        assertThat(deploymentURLAsParameter.toString(), startsWith("http://"));
     }
 }
