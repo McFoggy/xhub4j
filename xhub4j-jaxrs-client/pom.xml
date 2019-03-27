@@ -20,7 +20,7 @@
     <parent>
         <groupId>fr.brouillard.oss.security.xhub</groupId>
         <artifactId>xhub4j-parent</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.1.0-SNAPSHOT</version>
     </parent>
     <artifactId>xhub4j-jaxrs-client</artifactId>
 
