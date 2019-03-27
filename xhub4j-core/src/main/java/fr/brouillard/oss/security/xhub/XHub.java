@@ -17,6 +17,7 @@ package fr.brouillard.oss.security.xhub;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Locale;
 
 import javax.crypto.Mac;
@@ -47,22 +48,46 @@ public class XHub {
         BASE64 {
             @Override
             public String convert(byte[] data) {
-                return DatatypeConverter.printBase64Binary(data);
+                return Base64.getEncoder().encodeToString(data);
             }
         },
         BASE64_LOWERCASE {
             @Override
             public String convert(byte[] data) {
-                return DatatypeConverter.printBase64Binary(data).toLowerCase();
+                return Base64.getEncoder().encodeToString(data).toLowerCase();
             }
         },
         HEXA {
             @Override
             public String convert(byte[] data) {
-                return DatatypeConverter.printHexBinary(data);
+                return HexadecimalConverter.toHexadecimal(data);
             }
         }, 
         HEXA_LOWERCASE {
+            @Override
+            public String convert(byte[] data) {
+                return HexadecimalConverter.toHexadecimal(data).toLowerCase();
+            }
+        },
+        OLD_BASE64 {
+            @Override
+            public String convert(byte[] data) {
+                return DatatypeConverter.printBase64Binary(data);
+            }
+        },
+        OLD_BASE64_LOWERCASE {
+            @Override
+            public String convert(byte[] data) {
+                return DatatypeConverter.printBase64Binary(data).toLowerCase();
+            }
+        },
+        OLD_HEXA {
+            @Override
+            public String convert(byte[] data) {
+                return DatatypeConverter.printHexBinary(data);
+            }
+        },
+        OLD_HEXA_LOWERCASE {
             @Override
             public String convert(byte[] data) {
                 return DatatypeConverter.printHexBinary(data).toLowerCase();
