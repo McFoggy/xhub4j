@@ -22,7 +22,6 @@ import java.util.Locale;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
 
 public class XHub {
     public enum XHubDigest {
@@ -67,30 +66,6 @@ public class XHub {
             @Override
             public String convert(byte[] data) {
                 return HexadecimalConverter.toHexadecimal(data).toLowerCase();
-            }
-        },
-        OLD_BASE64 {
-            @Override
-            public String convert(byte[] data) {
-                return DatatypeConverter.printBase64Binary(data);
-            }
-        },
-        OLD_BASE64_LOWERCASE {
-            @Override
-            public String convert(byte[] data) {
-                return DatatypeConverter.printBase64Binary(data).toLowerCase();
-            }
-        },
-        OLD_HEXA {
-            @Override
-            public String convert(byte[] data) {
-                return DatatypeConverter.printHexBinary(data);
-            }
-        },
-        OLD_HEXA_LOWERCASE {
-            @Override
-            public String convert(byte[] data) {
-                return DatatypeConverter.printHexBinary(data).toLowerCase();
             }
         };
         

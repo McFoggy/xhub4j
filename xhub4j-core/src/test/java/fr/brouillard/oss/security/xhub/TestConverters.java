@@ -24,29 +24,36 @@ import static org.junit.Assert.assertEquals;
 
 public class TestConverters {
     private final static String LOREM = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+    private final static String[] LOREM_BASE64 = {"TG9yZW0=","aXBzdW0=","ZG9sb3I=","c2l0","YW1ldCw=","Y29uc2VjdGV0dXI=","YWRpcGlzY2luZw==","ZWxpdC4="};
+    private final static String[] LOREM_BASE64_LOWERCASE = {"tg9yzw0=","axbzdw0=","zg9sb3i=","c2l0","yw1ldcw=","y29uc2vjdgv0dxi=","ywrpcglzy2luzw==","zwxpdc4="};
+    private final static String[] LOREM_HEXA = {"4C6F72656D","697073756D","646F6C6F72","736974","616D65742C","636F6E7365637465747572","61646970697363696E67","656C69742E"};
+    private final static String[] LOREM_HEXA_LOWERCASE = {"4c6f72656d","697073756d","646f6c6f72","736974","616d65742c","636f6e7365637465747572","61646970697363696e67","656c69742e"};
 
     @Test
     public void check_BASE64() {
-        checkConvertersCompatibility(XHub.XHubConverter.OLD_BASE64, XHub.XHubConverter.BASE64);
+        checkConversion(XHub.XHubConverter.BASE64, LOREM_BASE64);
     }
+
+    private void checkConversion(XHub.XHubConverter converter, String[] expectedResults) {
+        List<String> words = loremWords();
+        for (int i = 0; i < words.size(); i++) {
+            String loremWord = words.get(i);
+            assertEquals(expectedResults[i], converter.convert(loremWord.getBytes()));
+        }
+    }
+
     @Test
     public void check_BASE64_LOWERCASE() {
-        checkConvertersCompatibility(XHub.XHubConverter.OLD_BASE64_LOWERCASE, XHub.XHubConverter.BASE64_LOWERCASE);
+        checkConversion(XHub.XHubConverter.BASE64_LOWERCASE, LOREM_BASE64_LOWERCASE);
     }
+
     @Test
     public void check_HEXA() {
-        checkConvertersCompatibility(XHub.XHubConverter.OLD_HEXA, XHub.XHubConverter.HEXA);
+        checkConversion(XHub.XHubConverter.HEXA, LOREM_HEXA);
     }
     @Test
     public void check_HEXA_LOWERCASE() {
-        checkConvertersCompatibility(XHub.XHubConverter.OLD_HEXA_LOWERCASE, XHub.XHubConverter.HEXA_LOWERCASE);
-    }
-
-    private void checkConvertersCompatibility(XHub.XHubConverter oldConverter, XHub.XHubConverter newConverter) {
-        loremWords().forEach(word -> {
-            byte[] bytes = word.getBytes();
-            assertEquals(oldConverter.convert(bytes), newConverter.convert(bytes));
-        });
+        checkConversion(XHub.XHubConverter.HEXA_LOWERCASE, LOREM_HEXA_LOWERCASE);
     }
 
     private static List<String> loremWords() {
