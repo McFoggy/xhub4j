@@ -73,7 +73,7 @@
 
 		<arquillian.qualifier>wildfly10</arquillian.qualifier>
 
-		<version.junit>4.12</version.junit>
+		<version.junit>4.13.1</version.junit>
 		<version.javaee>7.0</version.javaee>
 
 		<version.plugin.failsafe>2.19</version.plugin.failsafe>
